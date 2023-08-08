@@ -4,8 +4,8 @@ import numpy as np
 from skimage.metrics import structural_similarity
 
 # Load the two images
-img1 = cv2.imread("C:\Users\Dell\PycharmProjects\portrait_image_compare\sample_images\img_2_1.jpg")
-img2 = cv2.imread("C:\Users\Dell\PycharmProjects\portrait_image_compare\sample_images\img_2_2.jpg")
+img1 = cv2.imread("C:/Users/Dell/PycharmProjects/portrait_image_compare/sample_images/img_4_1.jpg")
+img2 = cv2.imread("C:/Users/Dell/PycharmProjects/portrait_image_compare/sample_images/img_4_2.jpg")
 
 # Resize images if necessary
 img1 = cv2.resize(img1, (700,480))
@@ -25,6 +25,9 @@ cv2.imshow("Difference", diff)
 # Apply threshold. Apply both THRESH_BINARY_INV and THRESH_OTSU
 thresh = cv2.threshold(diff, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 cv2.imshow("Threshold", thresh)
+
+cv2.imshow("Threshold", thresh)
+
 
 # Calculate contours
 contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -48,7 +51,7 @@ cv2.drawContours(contour_image, contours, -1, (0, 0, 255), 2)  # You can adjust 
 score_text = f"Similarity Score: {similar:.2f}"
 
 # Add the similarity score as text on the image
-cv2.putText(img1, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+cv2.putText(contour_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
 # Show the modified image with blurred differences
 cv2.imshow("Blurred Differences", contour_image)

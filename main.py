@@ -1,24 +1,43 @@
-# This is a sample Python script.
+import cv2
+import imutils
+import numpy as np
+from skimage.metrics import structural_similarity
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import diffimg as di
+img1 = cv2.imread("sample_images/img_1_2.jpg")
+img2 = cv2.imread("sample_images/img_1_1.jpg")
 
-#di.diff('C:/Users/Dell/Downloads/CVPK4263-PhotoRoom.png', 'C:/Users/Dell/Downloads/CVPK4263(1).png')
-di.diff('sample_images/img_1.jpg',
-     'sample_images/img_1_1.jpg',
-     delete_diff_file=False,
-     diff_img_file='Output/diffimg.png',
-     ignore_alpha=False)
+# Resize images if necessary
+img1 = cv2.resize(img1, (700, 480))
+img2 = cv2.resize(img2, (700, 480))
 
-'''def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+img_height = img1.shape[0]
+
+# Grayscale
+gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
+(similar, diff) = structural_similarity(gray1, gray2, full=True)
+print("Level of similarity : {}".format(similar))
+
+diff = (diff * 255).astype("uint8")
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Apply Otsu's thresholding to create a binary mask of differences
+thresh = cv2.threshold(diff, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-'''
+# Create an image with saturated blue color
+saturated_blue_image = np.zeros_like(img1)
+saturated_blue_image[:, :, 0] = 255  # Set blue channel to 255 (full blue)
+saturated_blue_image[:, :, 1] = 0    # Set green channel to 0
+saturated_blue_image[:, :, 2] = 0    # Set red channel to 0
+
+# Keep only the differences as red
+saturated_blue_image[thresh > 0] = [0, 0, 255]  # Set red channel to 255 where differences are present
+
+score_text = f"Similarity Score: {similar:.2f}"
+
+cv2.putText(saturated_blue_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+cv2.imshow("Saturated Blue with Red Differences", saturated_blue_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

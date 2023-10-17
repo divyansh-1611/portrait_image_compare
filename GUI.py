@@ -63,11 +63,6 @@ gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 # Initialize the threshold value
 threshold = 100  # You can set an initial value
 
-# Create an image with saturated blue color
-saturated_blue_image = np.zeros_like(img1)
-saturated_blue_image[:, :, 0] = 255
-saturated_blue_image[:, :, 1] = 0
-saturated_blue_image[:, :, 2] = 0
 
 # Apply Canny edge detection
 #edges = cv2.Canny(gray1, 100, 200)

@@ -3,6 +3,7 @@ import imutils
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
 
+diff = None
 
 def update_threshold(x):
     global threshold
@@ -11,16 +12,20 @@ def update_threshold(x):
 
 
 def update_display(threshold):
+    global diff  # Access the global diff variable
     # Apply the threshold with the updated value
-    diff_8u = cv2.convertScaleAbs(diff)
-    _, thresh = cv2.threshold(diff_8u, threshold, 255, cv2.THRESH_BINARY_INV)
+    diff = (diff * 255).astype("uint8")
+    _, thresh = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY_INV)
+
+    # Create an image with saturated blue color
+    displayed_image = np.zeros_like(img1)
+    displayed_image[:, :, 0] = 255  # Set blue channel to 255 (full blue)
 
     # Create a binary mask for the differences
     diff_mask = np.zeros_like(thresh)
     diff_mask[thresh > 0] = 1
 
     # Create an image with the differences in red
-    displayed_image = img1.copy()
     displayed_image[diff_mask == 1] = [0, 0, 255]
 
     # Blend the displayed image with the result image (original image with green edge contours)
@@ -54,7 +59,6 @@ gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 (similar, diff) = ssim(gray1, gray2, full=True)
-#diff = (diff * 255).astype("uint8")
 
 # Initialize the threshold value
 threshold = 100  # You can set an initial value
@@ -77,8 +81,7 @@ saturated_blue_image[:, :, 2] = 0
 
 # Create a window with a trackbar for threshold adjustment
 cv2.namedWindow("Result Image with Overlaid Differences and Edge Contours")
-cv2.createTrackbar("Threshold", "Result Image with Overlaid Differences and Edge Contours", threshold, 255,
-                   update_threshold)
+cv2.createTrackbar("Threshold", "Result Image with Overlaid Differences and Edge Contours", threshold, 255,update_threshold)
 
 update_display(threshold)
 

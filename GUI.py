@@ -14,8 +14,8 @@ def update_threshold(x):
 def update_display(threshold):
     global diff  # Access the global diff variable
     # Apply the threshold with the updated value
-    diff = (diff * 255).astype("uint8")
-    _, thresh = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY_INV)
+    difference = (diff * 255).astype("uint8")
+    _, thresh = cv2.threshold(difference, threshold, 255, cv2.THRESH_BINARY_INV)
 
     # Create an image with saturated blue color
     displayed_image = np.zeros_like(img1)
@@ -37,20 +37,21 @@ def update_display(threshold):
     #cv2.drawContours(result_image, edge_contours, -1, (0, 255, 0), 1)
 
     # Add the similarity score as text on the image
-    cv2.putText(result_image, f"Similarity Score: {similar:.2f}", (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
-                (0, 255, 0), 2)
+    cv2.putText(result_image, f"Similarity Score: {similar:.2f}", (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 1.5,
+                (0, 255, 0), 3)
 
     # Show the result image with real-time threshold adjustment
+    result_image = cv2.resize(result_image, (700, 480))
     cv2.imshow("Result Image with Overlaid Differences and Edge Contours", result_image)
 
 
 # Load the two images
-img1 = cv2.imread("/home/dell/Pictures/grnd_trth/18.jpg")
-img2 = cv2.imread("/home/dell/Pictures/portrait/18.jpg")
+img1 = cv2.imread("sample_images/img_3_2.jpg")
+img2 = cv2.imread("sample_images/img_3_1.jpg")
 
 # Resize images if necessary
-img1 = cv2.resize(img1, (700, 480))
-img2 = cv2.resize(img2, (700, 480))
+#img1 = cv2.resize(img1, (700, 480))
+#img2 = cv2.resize(img2, (700, 480))
 
 img_height = img1.shape[0]
 
@@ -59,7 +60,7 @@ gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 (similar, diff) = ssim(gray1, gray2, full=True)
-
+difference = cv2.absdiff(gray1, gray2)
 # Initialize the threshold value
 threshold = 100  # You can set an initial value
 

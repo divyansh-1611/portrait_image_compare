@@ -24,7 +24,7 @@ diff = (diff * 255).astype("uint8")
 cv2.imshow("Difference", diff)
 
 # Apply threshold. Apply both THRESH_BINARY_INV and THRESH_OTSU
-thresh = cv2.threshold(diff, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+thresh = cv2.threshold(diff, 100, 255, cv2.THRESH_BINARY_INV | cv2.ADAPTIVE_THRESH_GAUSSIAN_C)[1]
 
 # Create an image with saturated blue color
 saturated_blue_image = np.zeros_like(img1)
@@ -45,21 +45,26 @@ contour_image = saturated_blue_image.copy()
 # Draw contours on the image
 cv2.drawContours(contour_image, contours, -1, (0, 0, 0), 1)  # Draw contours in black color
 
-# Apply Canny edge detection
+result_image = img1.copy()
+# Blend the saturated blue image with the result image
+alpha = 0.2  # Adjust the alpha (transparency) value as needed
+cv2.addWeighted(result_image, alpha, saturated_blue_image, 1 - alpha, 0, result_image)
+
+'''# Apply Canny edge detection
 edges = cv2.Canny(gray1, 100, 200)  # Adjust the thresholds as needed
 
 # Find and draw contours for edges
 edge_contours = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 edge_contours = imutils.grab_contours(edge_contours)
-cv2.drawContours(contour_image, edge_contours, -1, (0, 0, 0), 1)  # Draw edge contours in green color
+cv2.drawContours(contour_image, edge_contours, -1, (0, 0, 0), 1)  # Draw edge contours in green color'''
 
 # Convert the similarity score to a formatted string
 score_text = f"Similarity Score: {similar:.2f}"
 
 # Add the similarity score as text on the image
-cv2.putText(contour_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+cv2.putText(result_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
 # Show the modified image with saturated blue color and red differences
-cv2.imshow("Saturated Blue with Red Differences", contour_image)
+cv2.imshow("Saturated Blue with Red Differences", result_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -37,17 +37,17 @@ def update_display(threshold):
     #cv2.drawContours(result_image, edge_contours, -1, (0, 255, 0), 1)
 
     # Add the similarity score as text on the image
-    cv2.putText(result_image, f"Similarity Score: {similar:.2f}", (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 1.5,
-                (0, 255, 0), 3)
+    cv2.putText(result_image, f"Similarity Score: {similar:.2f}", (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 4,
+                (0, 255, 0), 5)
 
     # Show the result image with real-time threshold adjustment
-    result_image = cv2.resize(result_image, (700, 480))
+    result_image = cv2.resize(result_image, (560,700))
     cv2.imshow("Result Image with Overlaid Differences and Edge Contours", result_image)
 
 
 # Load the two images
-img1 = cv2.imread("sample_images/img_3_2.jpg")
-img2 = cv2.imread("sample_images/img_3_1.jpg")
+img1 = cv2.imread("/home/dell/Pictures/5.jpg")
+img2 = cv2.imread("/home/dell/Pictures/portrait/5.jpg")
 
 # Resize images if necessary
 #img1 = cv2.resize(img1, (700, 480))

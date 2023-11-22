@@ -16,8 +16,8 @@ def image_comparison_with_visualization(image_1, image_2, output_folder):
     image_2 = cv2.imread(image_2)
 
     # Resize images if necessary
-    image_1 = cv2.resize(image_1, (700, 480))
-    image_2 = cv2.resize(image_2, (700, 480))
+    image_1 = cv2.resize(image_1, (2000, 3000))
+    image_2 = cv2.resize(image_2, (2000, 3000))
 
     img_height = image_1.shape[0]
 

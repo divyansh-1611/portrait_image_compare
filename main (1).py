@@ -8,6 +8,9 @@ from skimage.metrics import structural_similarity as ssim
 
 
 def image_comparison_with_visualization(image_1, image_2, output_folder):
+
+    file_name = os.path.splitext(os.path.basename(image_1))[0]
+
     # Load the two images
     image_1 = cv2.imread(image_1)
     image_2 = cv2.imread(image_2)
@@ -59,14 +62,14 @@ def image_comparison_with_visualization(image_1, image_2, output_folder):
     # cv2.putText(result_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
     # Show the modified image with saturated blue color and red differences
-    cv2.imshow("Saturated Blue with Red Differences", result_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #cv2.imshow("Saturated Blue with Red Differences", result_image)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
     # Create the output folder if it doesn't exist
     os.makedirs(output_folder, exist_ok=True)
 
     # Extract file name without extension
-    file_name = os.path.splitext(os.path.basename(image_1))[0]
+    #file_name = os.path.splitext(os.path.basename(image_1))[0]
 
     # Save the modified image with saturated blue color and red differences
     output_path = os.path.join(output_folder, f"{file_name}_output.jpg")
@@ -132,7 +135,7 @@ def process_image_pairs(folder1, folder2, output_csv):
                     similarity_score = calculate_ssim(image1_path, image2_path)
                     psnr_score = calculate_psnr(image1_path,image2_path)
                     # Visualize differences and save the image
-                    #image_comparison_with_visualization(image1_path, image2_path, output_visualization)
+                    image_comparison_with_visualization(image1_path, image2_path, output_visualization)
 
                     # Write results to CSV
                     writer.writerow({'Image1': filename, 'Image2': filename, 'SimilarityScore': similarity_score, 'PSNR Score' : psnr_score})

@@ -46,8 +46,8 @@ def update_display(threshold):
 
 
 # Load the two images
-img1 = cv2.imread("/home/dell/Pictures/5.jpg")
-img2 = cv2.imread("/home/dell/Pictures/portrait/5.jpg")
+img1 = cv2.imread("/home/dell/Pictures/6.jpg")
+img2 = cv2.imread("/home/dell/Pictures/portrait/6.jpg")
 
 # Resize images if necessary
 #img1 = cv2.resize(img1, (700, 480))

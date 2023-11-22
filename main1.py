@@ -4,8 +4,8 @@ import numpy as np
 from skimage.metrics import structural_similarity
 
 # Load the two images
-img1 = cv2.imread("C:/Users/Dell/PycharmProjects/portrait_image_compare/sample_images/img_4_1.jpg")
-img2 = cv2.imread("C:/Users/Dell/PycharmProjects/portrait_image_compare/sample_images/img_4_2.jpg")
+img1 = cv2.imread("sample_images/img_4_1.jpg")
+img2 = cv2.imread("sample_images/img_4_2.jpg")
 
 # Resize images if necessary
 img1 = cv2.resize(img1, (700,480))

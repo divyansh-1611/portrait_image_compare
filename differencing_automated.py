@@ -31,7 +31,7 @@ def image_comparison_with_visualization(image_1, image_2, output_folder):
     diff = (diff * 255).astype("uint8")
     diff = cv2.threshold(diff, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-    # Create an image with saturated blue color
+    #Create an image with saturated blue color
     saturated_blue_image = np.zeros_like(image_1)
     saturated_blue_image[:, :, 0] = 255  # Set blue channel to 255 (full blue)
     saturated_blue_image[:, :, 1] = 0    # Set green channel to 0
@@ -51,15 +51,10 @@ def image_comparison_with_visualization(image_1, image_2, output_folder):
     cv2.drawContours(contour_image, contours, -1, (0, 0, 0), 1)  # Draw contours in black color
 
     result_image = image_1.copy()
-    # Blend the saturated blue image with the result image
+    # Blending the saturated blue image with the result image
     alpha = 0.0  # Adjust the alpha (transparency) value as needed
     cv2.addWeighted(result_image, alpha, saturated_blue_image, 1 - alpha, 0, result_image)
 
-    # Convert the similarity score to a formatted string (commented out as SSIM score is not calculated)
-    # score_text = f"Similarity Score: {similar:.2f}"
-
-    # Add the similarity score as text on the image (commented out as SSIM score is not calculated)
-    # cv2.putText(result_image, score_text, (10, img_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
     # Show the modified image with saturated blue color and red differences
     #cv2.imshow("Saturated Blue with Red Differences", result_image)
@@ -142,9 +137,9 @@ def process_image_pairs(folder1, folder2, output_csv):
 
 
 if __name__ == "__main__":
-    folder1_path = "/home/dell/Pictures/portrait"
-    folder2_path = "/home/dell/Pictures/grnd_trth"
-    output_csv_path = "/home/dell/Pictures/output.csv"
-    output_visualization = "/home/dell/Pictures/Output"
+    folder1_path = "sample_images/image 1"
+    folder2_path = "sample_images/image 2"
+    output_csv_path = "sample_images/output.csv"
+    output_visualization = "sample_images/Output"
 
     process_image_pairs(folder1_path, folder2_path, output_csv_path)
